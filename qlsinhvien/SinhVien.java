@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SinhVien {
+    DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private List<SinhVien> danhSachSinhVien;
     private String maSv, tenSv, diaChi, gioiTinh, khoa, queQuan, email;
     private float diem1, diem2, diem3;
@@ -42,7 +43,6 @@ public class SinhVien {
     public SinhVien themSinhVien(Scanner scanner) throws ParseException {
         SinhVien sv = new SinhVien();
 
-    DecimalFormat decimalFormat = new DecimalFormat("#.#");
         System.out.print("Nhập mã sinh viên: ");
         sv.maSv = scanner.nextLine();
 
@@ -100,91 +100,93 @@ public class SinhVien {
             arrSinhVien.add(sv);
         }
     }
-
         
-    
     // Ý 1: tính điểm trung bình cho danh sách sinh viên
 public void tinhDiemTrungBinhChoDanhSach() {
     System.out.println(" \nĐiểm trung bình của các sinh viên :");
-    int soThuTu = 1;
+    int stt = 1;
     
     for (SinhVien sinhVien : danhSachSinhVien) {
         float diemTrungBinh = sinhVien.tinhDiemTb();
-        System.out.println("Stt: " + soThuTu + ", MSSV: " + sinhVien.maSv + ", Họ và tên: " + sinhVien.tenSv + ", Điểm trung bình: " + diemTrungBinh);
-        soThuTu++;
+        System.out.println("Stt: " + stt + ", MSSV: " + sinhVien.maSv + ", Họ và tên: " + sinhVien.tenSv + ", Điểm trung bình: " + diemTrungBinh);
+        stt++;
     }
 
 }
-
-
-    // Ý 2: sắp xếp danh sách sinh viên theo thứ tự từ điển
-    public void sapXepTheoThuTuTuDien() {
-        Collections.sort(danhSachSinhVien, new Comparator<SinhVien>() {
-            public int compare(SinhVien sv1, SinhVien sv2) {
-                return sv1.getTenSv().compareTo(sv2.getTenSv());
-            }
-        });
-    }
+ // Ý 2: Sắp xếp danh sách sinh viên theo thứ tự từ điển
+public void sapXepTheoThuTuTuDien() {
+    Collections.sort(danhSachSinhVien, new Comparator<SinhVien>() {
+        public int compare(SinhVien sv1, SinhVien sv2) {
+            return sv1.getTenSv().compareTo(sv2.getTenSv());
+        }
+    });
+}
 
 public void hienDanhSachCoStt() {
     System.out.println("---------DANH SÁCH SINH VIÊN ---------");
-    for (int i = 0; i < danhSachSinhVien.size(); i++) {
-        SinhVien sinhVien = danhSachSinhVien.get(i);
-        System.out.println("Stt: " + (i + 1) + "\t"+ sinhVien.toString());
+    int stt = 1;
+    for (SinhVien sinhVien : danhSachSinhVien) {
+        System.out.println("Stt: " + stt + ", MSSV: " + sinhVien.maSv + ", Họ và tên: " + sinhVien.tenSv +
+                ", Địa chỉ: " + sinhVien.diaChi + ", Giới tính: " + sinhVien.gioiTinh + ", Khoa: " + sinhVien.khoa +
+                ", Quê quán: " + sinhVien.queQuan + ", Email: " + sinhVien.email);
+        stt++;
     }
-    System.out.println("----------------------");
 }
 
 
-    // Ý 3: In ra danh sách sinh viên được khen thưởng
-    // biết rằng để được khen thưởng sinh viên đó phải đạt điểm trung bình > 8.0 và không có điểm nào dưới 7
+/* Ý 3: In ra danh sách sinh viên được khen thưởng
+   biết rằng để được khen thưởng sinh viên đó phải đạt điểm trung bình > 8.0 và không có điểm nào dưới 7*/
 public void hienThiSinhVienDuocKhenThuong() {
-    System.out.println(" \nDanh sách sinh viên được khen thưởng :");
+    System.out.println("Danh sách sinh viên được khen thưởng:");
     boolean coSinhVienDuocKhenThuong = false;
     
+    int stt = 1;
     for (SinhVien sinhVien : danhSachSinhVien) {
         float diemTrungBinh = sinhVien.tinhDiemTb();
         boolean khongDuoiBay = true;
-        
-        if (sinhVien.diem1 < 7 || sinhVien.diem2 < 7 || sinhVien.diem3 < 7) {
+
+        if (sinhVien.getDiem1() < 7 || sinhVien.getDiem2() < 7 || sinhVien.getDiem3() < 7) {
             khongDuoiBay = false;
         }
 
         if (diemTrungBinh > 8.0 && khongDuoiBay) {
-            System.out.println(sinhVien.toString());
+            System.out.println("STT: " + stt + ", MSSV: " + sinhVien.getMaSv() + ", Họ và tên: " + sinhVien.getTenSv() + ", Điểm 1: " 
+                    + sinhVien.getDiem1() + ", Điểm 2: " + sinhVien.getDiem2() + ", Điểm 3: " + sinhVien.getDiem3() + ", Điểm trung bình: " + diemTrungBinh);
             coSinhVienDuocKhenThuong = true;
+            stt++;
         }
     }
 
     if (!coSinhVienDuocKhenThuong) {
-        System.out.println(" \nKhông có sinh viên nào được khen thưởng.");
+        System.out.println("Không có sinh viên nào được khen thưởng.");
     }
 }
 
 
-    // Ý 4: Cho biết Nam sinh viên có điểm cao nhất của khoa điện tử
-    public void hienThiSinhVienNamDiemCaoNhat() {
-        float diemCaoNhat = -1;
-        SinhVien sinhVienNamDiemCaoNhat = null;
+// Ý 4: Cho biết Nam sinh viên có điểm cao nhất của khoa điện tử
+public void hienThiSinhVienNamDiemCaoNhat() {
+    float diemCaoNhat = -1;
+    SinhVien sinhVienNamDiemCaoNhat = null;
 
-        for (SinhVien sinhVien : danhSachSinhVien) {
-            if (sinhVien.gioiTinh.equalsIgnoreCase("Nam") && sinhVien.khoa.equalsIgnoreCase("Dien tu")) {
-                float diemTrungBinh = sinhVien.tinhDiemTb();
-                if (diemTrungBinh > diemCaoNhat) {
-                    diemCaoNhat = diemTrungBinh;
-                    sinhVienNamDiemCaoNhat = sinhVien;
-                }
+    for (SinhVien sinhVien : danhSachSinhVien) {
+        if (sinhVien.getGioiTinh().equalsIgnoreCase("Nam") && sinhVien.getKhoa().equalsIgnoreCase("Dien tu")) {
+            float diemTrungBinh = sinhVien.tinhDiemTb();
+            if (diemTrungBinh > diemCaoNhat) {
+                diemCaoNhat = diemTrungBinh;
+                sinhVienNamDiemCaoNhat = sinhVien;
             }
         }
-
-        if (sinhVienNamDiemCaoNhat != null) {
-            System.out.println(" \nSinh viên nam có điểm cao nhất trong khoa điện tử :");
-            System.out.println(sinhVienNamDiemCaoNhat.toString());
-        } else {
-            System.out.println(" \nKhông có sinh viên nam trong khoa điện tử .");
-        }
-
     }
+
+    if (sinhVienNamDiemCaoNhat != null) {
+        System.out.println("Sinh viên nam có điểm cao nhất trong khoa điện tử:");
+        System.out.println("MSSV: " + sinhVienNamDiemCaoNhat.getMaSv() + ", Họ và tên: " + sinhVienNamDiemCaoNhat.getTenSv() + ", Giới tính: "
+                + sinhVienNamDiemCaoNhat.getGioiTinh() + ", Khoa: " + sinhVienNamDiemCaoNhat.getKhoa() + ", Điểm 1: " + sinhVienNamDiemCaoNhat.getDiem1()
+                + ", Điểm 2: " + sinhVienNamDiemCaoNhat.getDiem2() + ", Điểm 3: " + sinhVienNamDiemCaoNhat.getDiem3() + ", Điểm trung bình: " + sinhVienNamDiemCaoNhat.getGpa());
+    } else {
+        System.out.println("Không có sinh viên nam trong khoa điện tử.");
+    }
+}
 
     
 public void hienDanhSachSinhVienAll(ArrayList<SinhVien> arrSinhVien) {
@@ -194,8 +196,7 @@ public void hienDanhSachSinhVienAll(ArrayList<SinhVien> arrSinhVien) {
         System.out.println("Stt: " + (i + 1) + "\t" + sinhVien.toString());
     }
     System.out.println("----------------------");
-}
-    
+}    
 
     @Override
     public String toString() {
@@ -209,7 +210,7 @@ public void hienDanhSachSinhVienAll(ArrayList<SinhVien> arrSinhVien) {
                     ", Điểm 1: " + diem1 +
                     ", Điểm 2: " + diem2 +
                     ", Điểm 3: " + diem3 +
-                    ", GPA: " + gpa ;
+                    ", Điểm trung bình: " + gpa ;
 }
 
 
