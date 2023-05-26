@@ -1,5 +1,7 @@
 package qlsinhvien;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,9 +39,10 @@ public class SinhVien {
         return (diem1 + diem2 + diem3) / 3;
     }
 
-    public SinhVien themSinhVien(Scanner scanner) {
+    public SinhVien themSinhVien(Scanner scanner) throws ParseException {
         SinhVien sv = new SinhVien();
 
+    DecimalFormat decimalFormat = new DecimalFormat("#.#");
         System.out.print("Nhập mã sinh viên: ");
         sv.maSv = scanner.nextLine();
 
@@ -62,13 +65,19 @@ public class SinhVien {
         sv.email = scanner.nextLine();
 
         System.out.print("Nhập điểm 1: ");
-        sv.diem1 = scanner.nextFloat();
+        String diem1Str = scanner.nextLine();
+        diem1Str = diem1Str.replace(",", ".");
+        sv.diem1 = decimalFormat.parse(diem1Str).floatValue();
 
         System.out.print("Nhập điểm 2: ");
-        sv.diem2 = scanner.nextFloat();
+        String diem2Str = scanner.nextLine();
+        diem2Str = diem2Str.replace(",", ".");
+        sv.diem2 = decimalFormat.parse(diem2Str).floatValue();
 
         System.out.print("Nhập điểm 3: ");
-        sv.diem3 = scanner.nextFloat();
+        String diem3Str = scanner.nextLine();
+        diem3Str = diem3Str.replace(",", ".");
+        sv.diem3 = decimalFormat.parse(diem3Str).floatValue();
 
         scanner.nextLine(); // Đọc bỏ dòng new line
 
@@ -80,7 +89,7 @@ public class SinhVien {
         return sv;
     }
 
-    public void nhapDanhSachSinhVien(Scanner scanner) {
+    public void nhapDanhSachSinhVien(Scanner scanner) throws ParseException {
         System.out.print("Nhập số lượng sinh viên muốn thêm: ");
         int n = scanner.nextInt();
         scanner.nextLine(); // Đọc bỏ dòng new line
@@ -188,7 +197,6 @@ public void hienDanhSachSinhVienAll(ArrayList<SinhVien> arrSinhVien) {
 }
     
 
-
     @Override
     public String toString() {
         return   "Mã SV: " + maSv +
@@ -208,7 +216,7 @@ public void hienDanhSachSinhVienAll(ArrayList<SinhVien> arrSinhVien) {
     public List<SinhVien> getDanhSachSinhVien() {
         return danhSachSinhVien;
     }
-
+    
     public void setDanhSachSinhVien(List<SinhVien> danhSachSinhVien) {
         this.danhSachSinhVien = danhSachSinhVien;
     }
@@ -216,87 +224,66 @@ public void hienDanhSachSinhVienAll(ArrayList<SinhVien> arrSinhVien) {
     public String getMaSv() {
         return maSv;
     }
-
     public void setMaSv(String maSv) {
         this.maSv = maSv;
     }
-
     public String getTenSv() {
         return tenSv;
     }
-
     public void setTenSv(String tenSv) {
         this.tenSv = tenSv;
     }
-
     public String getDiaChi() {
         return diaChi;
     }
-
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
     }
-
     public String getGioiTinh() {
         return gioiTinh;
     }
-
     public void setGioiTinh(String gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
-
     public String getKhoa() {
         return khoa;
     }
-
     public void setKhoa(String khoa) {
         this.khoa = khoa;
     }
-
     public String getQueQuan() {
         return queQuan;
     }
-
     public void setQueQuan(String queQuan) {
         this.queQuan = queQuan;
     }
-
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
     public float getDiem1() {
         return diem1;
     }
-
     public void setDiem1(float diem1) {
         this.diem1 = diem1;
     }
-
     public float getDiem2() {
         return diem2;
     }
-
     public void setDiem2(float diem2) {
         this.diem2 = diem2;
     }
-
     public float getDiem3() {
         return diem3;
     }
-
     public void setDiem3(float diem3) {
         this.diem3 = diem3;
     }
-
     public float getGpa() {
         return gpa;
     }
-
     public void setGpa(float gpa) {
         this.gpa = gpa;
     }
